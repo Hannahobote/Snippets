@@ -26,7 +26,8 @@ const main = async () => {
 
   // View engine setup.
   app.engine('hbs', hbs.express4({
-    defaultLayout: join(directoryFullName, 'views', 'layouts', 'default')
+    defaultLayout: join(directoryFullName, 'views', 'layouts', 'default'),
+    partialsDir: join(directoryFullName, 'views', 'partials')
   }))
   app.set('view engine', 'hbs')
   app.set('views', join(directoryFullName, 'views'))
