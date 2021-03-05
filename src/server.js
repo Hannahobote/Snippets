@@ -1,21 +1,19 @@
 import express from 'express'
 import hbs from 'express-hbs'
-// import session from 'express-session'
-// import helmet from 'helmet'
+import session from 'express-session'
+import helmet from 'helmet'
 import logger from 'morgan'
 import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
 import { router } from './routes/router.js'
-// import { connectDB } from './config/mongoose.js'
+import { connectDB } from './config/mongooose.js'
 
 /**
  * The main function of the application.
  */
 const main = async () => {
   // connect to database
-  // await connectDB()
-  // connect to port
-  const PORT = 8080
+  await connectDB()
   // Creates an Express application.
   const app = express()
   // Get the directory name of this module's path.
@@ -50,8 +48,8 @@ const main = async () => {
   })
 
   // Starts the HTTP server listening for connections.
-  app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`)
+  app.listen(process.env.PORT, () => {
+    console.log(`Server running at http://localhost:${process.env.PORT}`)
     console.log('Press Ctrl-C to terminate...')
   })
 

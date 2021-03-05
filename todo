@@ -4,14 +4,29 @@
   2. update a snippet
   3. delet a snippet
 
-### login  
-  1. view for login 
-  2. in header make button to log out 
-
-### Main view for when a person first visits the page
+### Main view for when a person first visits the page for first time
   1. button to login
   2. button to create account 
   3. only show this view if the person is not logged in. 
+  4. view created snippets from other users
+
+### login  
+  a. prevent submit
+  1. view for login 
+  2. in header make button to log out 
+
+
+### create account
+  
+
 
 ### nav bar
   1. if logged in, show navbar 
+
+### error 
+  1. 404.html
+  2. 500.hbs - för att skcika data
+
+
+### .env
+  [x] 1. change to port to env string 

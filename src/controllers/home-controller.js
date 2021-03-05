@@ -1,4 +1,5 @@
 import moment from 'moment'
+import { SnippetsSchema } from '../models/snippets.js'
 /**
  *Hi.
  */
@@ -35,5 +36,24 @@ export class HomeController {
       dayName: moment().format('dddd')
     }
     res.render('home/index', { viewData })
+  }
+
+  /**
+   * Renders a view, based on posted data, and send the rendered HTML as sting as an http response.
+   *
+   * @param {object} req - Express request obj.
+   * @param {object} res - Express response obj.
+   * @param {Function} next - Express next middlewere function.
+   */
+  async create (req, res, next) {
+    try {
+      const snippet = new SnippetsSchema({
+        description: req.body.description,
+        done: req.body.done
+      })
+      await snippet.save()
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
