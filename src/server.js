@@ -19,6 +19,9 @@ const main = async () => {
   // Get the directory name of this module's path.
   const directoryFullName = dirname(fileURLToPath(import.meta.url))
 
+  // base url
+  const baseURL = process.env.BASE_URL || '/'
+
   // Set up a morgan logger using the dev format for log entries.
   app.use(logger('dev'))
 
@@ -57,7 +60,7 @@ const main = async () => {
 
   // Set various HTTP headers to make the application little more secure (https://www.npmjs.com/package/helmet).
   // (The web application uses external scripts and therefore needs to explicitly trust on code.jquery.com and cdn.jsdelivr.net.)
-  /* app.use(helmet())
+  app.use(helmet())
   app.use(
     helmet.contentSecurityPolicy({
       directives: {
@@ -94,9 +97,10 @@ const main = async () => {
       res.locals.flash = req.session.flash
       delete req.session.flash
     }
-
+    // pass base url to the views
+    res.locals.baseURL = baseURL
     next()
-  }) */
+  })
 }
 
 main().catch(console.error)

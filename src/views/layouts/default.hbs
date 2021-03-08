@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <base href="{{baseURL}}"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>1DV026 - Snippets</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 </head>
 <body>
-  <h1 class="p-3 mb-3 bg-dark text-white">Snippets!</h1>
-    <!--{{>navbar}}--> 
+ 
+    {{>navbar}}
   <div class="container justify-content-center">
     <h4 class="d-flex justify-content-center">Welcome to Snippets, where you can save your snippets for free!</h4>
+      {{>flash}}
       {{>main}}
-        <!--{{>login}}-->
-        <!---{{>create}}-->
       {{{body}}}
   </div>
 
