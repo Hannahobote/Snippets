@@ -9,15 +9,11 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 </head>
 <body>
- 
     {{>navbar}}
-  <div class="container justify-content-center">
-    <h4 class="d-flex justify-content-center">Welcome to Snippets, where you can save your snippets for free!</h4>
+  <main role="main" class="container">
       {{>flash}}
-      {{>main}}
       {{{body}}}
-  </div>
-
+  </main>
   {{>footer}}
 
 
