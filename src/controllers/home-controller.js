@@ -1,4 +1,5 @@
 // import moment from 'moment'
+import moment from 'moment'
 import { Snippets } from '../models/snippets.js'
 const data1 = [
   {
@@ -48,11 +49,33 @@ export class HomeController {
             description: snippet.description
           }))
       }
-      // console.log(viewData) // se whats in the database
+      console.log(viewData) // se whats in the database
       res.render('snippets/index', { viewData })
     } catch (error) {
       next(error)
     }
+  }
+
+  /**
+   * Displays a list of snippets.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param next
+   */
+  async createAccount (req, res, next) {
+    res.render('snippets/create-account')
+  }
+
+  /**
+   * Displays a list of snippets.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param next
+   */
+  async login (req, res, next) {
+    res.render('snippets/login')
   }
 
   /**
@@ -125,7 +148,7 @@ export class HomeController {
       }
       res.render('snippets/edit', { viewData })
     } catch (error) {
-      req.session.flash = { type: 'danger', text: error.message }
+      //  req.session.flash = { type: 'danger', text: error.message }
       res.redirect('..')
     }
   }

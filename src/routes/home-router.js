@@ -7,3 +7,7 @@ const controller = new HomeController()
 
 router.get('/', controller.index)
 // router.post('/', controller.indexPost)
+
+router.get('/login', controller.login)
+
+router.get('/create-account', controller.createAccount)
