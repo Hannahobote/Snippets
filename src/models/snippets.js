@@ -1,10 +1,18 @@
 import mongoose from 'mongoose'
-import { v4 as uuidv4 } from 'uuid'
+// import { v4 as uuidv4 } from 'uuid'
 
 export const SnippetsSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: false
+  },
+  title: {
+    type: String,
+    required: true,
+    trim: true,
+    minlength: 1
+  },
   description: {
-    title: String,
-    id: uuidv4(),
     type: String,
     required: true,
     trim: true,
@@ -12,8 +20,7 @@ export const SnippetsSchema = new mongoose.Schema({
   },
   done: {
     type: Boolean,
-    required: true,
-    default: false
+    required: false
   }
 }, {
   timestamps: true

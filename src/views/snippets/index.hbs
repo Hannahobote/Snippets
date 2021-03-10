@@ -1,0 +1,18 @@
+
+  <div class="d-grid gap-3">
+  <h4 class="d-flex justify-content-center p-2">Welcome to Snippets, where you can save your snippets for free!</h4>
+  </div>
+  
+  <div class="d-grid gap-3">
+   <ul class="list-group gap-3">
+    {{#each viewData.snippet}}
+    <h6>{{title}} by {{id}}</h6>
+    <li class="list-group-item">{{description}}</li>
+    {{/each}}
+  </ul>
+  </div>
+
+   <!-- <tr colspan="2">
+      <td class="text-center">No snippets to display.</td>
+    </tr>
+  </div>-->
