@@ -1,10 +1,10 @@
 import moment from 'moment'
 import { Snippets } from '../models/snippets.js'
-const data = [
+const data1 = [
   {
     title: 'php',
     user: 'member1',
-    id: 1,
+    id: 'linda',
     description: 'hello world, im member 1 ',
     snippet: `
     temp = $1
@@ -16,7 +16,7 @@ const data = [
   {
     title: ' java ',
     user: 'member2',
-    id: 2,
+    id: 'Hannah',
     description: 'im ´member 2',
     snippet: `
     temp = x
@@ -32,27 +32,26 @@ const data = [
  */
 export class HomeController {
   /**
-   *Displays a list of Snippets.
+   * Displays a list of snippets.
    *
-   * @param {object} req - Express request obj.
-   * @param {object} res - Express response obj.
-   * @param {Function} next - Express next middlewere function.
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param {Function} next - Express next middleware function.
    */
   async index (req, res, next) {
     try {
       const viewData = {
-        snippets: await Snippets.find({})
-          .map(snippets => ({
-            id: snippets._id,
-            createdAt: moment(snippets.createdAt).fromNow(),
-            value: snippets.value
+        snippet: (await Snippets.find({}))
+          .map(snippet => ({
+            id: snippet._id,
+            title: snippet.title,
+            description: snippet.description
           }))
       }
-      // res.render('home/index', { dummyData })
-      res.render('home/index', { data })
-      console.log('from index function:', viewData, await Snippets())
+      console.log(viewData)
+      res.render('snippets/index', { viewData })
     } catch (error) {
-      console.log(error)
+      next(error)
     }
   }
 
@@ -63,11 +62,11 @@ export class HomeController {
    * @param {object} res - Express response obj.
    */
   async new (req, res) {
-    try {
-      res.render('home/new')
-    } catch (error) {
-      console.log(error)
+    const viewData = {
+      description: '',
+      done: false
     }
+    res.render('snippets/new', { viewData })
   }
 
   /**
@@ -75,27 +74,21 @@ export class HomeController {
    *
    * @param {object} req - Express request obj.
    * @param {object} res - Express response obj.
-   * @param {Function} next - Express next middlewere function.
    */
-  async create (req, res, next) {
+  async create (req, res) {
     try {
-      // create a snippet
       const snippet = new Snippets({
-        value: req.body.value
+        description: req.body.description,
+        title: req.body.title
       })
 
-      // save to database
       await snippet.save()
 
-      // ...and redirect and show a message.
-      req.session.flash = { type: 'success', text: 'The pure number was saved successfully.' }
+      req.session.flash = { type: 'success', text: 'The snippet was created successfully.' }
       res.redirect('.')
-      res.render('home/index', { snippet })
     } catch (error) {
-      res.render('home/new', {
-        validationErrors: [error.message] || [error.errors.value.message],
-        value: req.body.value
-      })
+    //  req.session.flash = { type: 'danger', text: error.message }
+      res.redirect('./new')
     }
   }
 
@@ -104,92 +97,103 @@ export class HomeController {
    *
    * @param {object} req - Express request obj.
    * @param {object} res - Express response obj.
-   * @param {Function} next - Express next middlewere function.
    */
-  async indexPost (req, res, next) {
-    const viewData = {
+  async indexPost (req, res) {
+    const indexData = {
       name: req.body.name,
-      dayName: moment().format('dddd')
+      title: req.body.title,
+      description: req.body.description
+      // dayName: moment().format('dddd')
     }
-    res.render('home/index', { viewData })
+    console.log(indexData)
+    res.render('snippets/index', { indexData })
   }
 
   /**
-   * Renders a view, based on posted data, and send the rendered HTML as sting as an http response.
+   * Returns a HTML form for editing a snippet.
    *
    * @param {object} req - Express request obj.
    * @param {object} res - Express response obj.
-   * @param {Function} next - Express next middlewere function.
    */
-  async edit (req, res, next) {
+  async edit (req, res) {
     try {
-      const snippet = await Snippets.findById(req.params.id)
-      const { _id: id, title, description } = snippet
-      const data = { id, title, description }
-      return data
-      /* const snippet = new Snippets({
+      const snippet = await Snippets.findOne({ _id: req.params.id })
+      const viewData = {
+        id: snippet._id,
+        description: snippet.description,
+        done: snippet.title
+      }
+      res.render('snippets/edit', { viewData })
+    } catch (error) {
+      req.session.flash = { type: 'danger', text: error.message }
+      res.redirect('..')
+    }
+  }
+
+  /**
+   * Updates a snippet.
+   *
+   * @param {object} req - Express request obj.
+   * @param {object} res - Express response obj.
+   */
+  async update (req, res) {
+    try {
+      const result = await Snippets.updateOne({ _id: req.body.id }, {
         description: req.body.description,
-        done: req.body.done
+        done: req.body.done === 'on'
       })
-      await snippet.save() */
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
-  /**
-   * Renders a view, based on posted data, and send the rendered HTML as sting as an http response.
-   *
-   * @param {object} req - Express request obj.
-   * @param {object} res - Express response obj.
-   * @param {Function} next - Express next middlewere function.
-   */
-  async update (req, res, next) {
-    try {
-      const result = await Snippets.updateOne({ _id: res.body.id }, {
-        description: res.bdy.description,
-        done: res.body.done === 'on'
-      })
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  /**
-   * Renders a view, based on posted data, and send the rendered HTML as sting as an http response.
-   *
-   * @param {object} req - Express request obj.
-   * @param {object} res - Express response obj.
-   * @param {Function} next - Express next middlewere function.
-   */
-  async remove (req, res, next) {
-    try {
-      const snippet = new Snippets({
-        description: req.body.description,
-        done: req.body.done
-      })
-      await snippet.save()
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  /**
-   * Renders a view, based on posted data, and send the rendered HTML as sting as an http response.
-   *
-   * @param {object} req - Express request obj.
-   * @param {object} res - Express response obj.
-   * @param {Function} next - Express next middlewere function.
-   */
-  async delete (req, res, next) {
-    try {
-      await Snippets.deleteOne({ _id: res.body.id })
-      req.session.flash = {
-        type: 'success', text: 'The sbippet has been deleted'
+      if (result.nModified === 1) {
+        req.session.flash = { type: 'success', text: 'The snippet was updated successfully.' }
+      } else {
+        req.session.flash = {
+          type: 'danger',
+          text: 'The snippet you attempted to update was removed by another user after you got the original values.'
+        }
       }
       res.redirect('..')
     } catch (error) {
-      console.log(error)
+      req.session.flash = { type: 'danger', text: error.message }
+      res.redirect('./edit')
+    }
+  }
+
+  /**
+   * Returns a HTML form for removing a snippet.
+   *
+   * @param {object} req - Express request obj.
+   * @param {object} res - Express response obj.
+   */
+  async remove (req, res) {
+    try {
+      const snippet = await Snippets.findOne({ _id: req.params.id })
+      const viewData = {
+        id: snippet._id,
+        description: snippet.description,
+        done: snippet.done
+      }
+      res.render('snippets/remove', { viewData })
+    } catch (error) {
+      req.session.flash = { type: 'danger', text: error.message }
+      res.redirect('..')
+    }
+  }
+
+  /**
+   * Deletes the specified snippet.
+   *
+   * @param {object} req - Express request obj.
+   * @param {object} res - Express response obj.
+   */
+  async delete (req, res) {
+    try {
+      await Snippets.deleteOne({ _id: req.body.id })
+
+      req.session.flash = { type: 'success', text: 'The snippet was deleted successfully.' }
+      res.redirect('..')
+    } catch (error) {
+      req.session.flash = { type: 'danger', text: error.message }
+      res.redirect('./remove')
     }
   }
 }
