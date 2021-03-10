@@ -1,7 +1,7 @@
 // import moment from 'moment'
-import moment from 'moment'
+// import moment from 'moment'
 import { Snippets } from '../models/snippets.js'
-const data1 = [
+/* const data1 = [
   {
     title: 'php',
     user: 'member1',
@@ -26,7 +26,7 @@ const data1 = [
     `,
     done: false
   }
-]
+] */
 
 /**
  *Hi.
@@ -61,7 +61,7 @@ export class HomeController {
    *
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.
-   * @param next
+   * @param {Function} next - Express next middleware function.
    */
   async createAccount (req, res, next) {
     res.render('snippets/create-account')
@@ -72,7 +72,7 @@ export class HomeController {
    *
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.
-   * @param next
+   * @param {Function} next - Express next middleware function.
    */
   async login (req, res, next) {
     res.render('snippets/login')
