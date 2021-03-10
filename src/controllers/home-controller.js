@@ -48,7 +48,7 @@ export class HomeController {
             description: snippet.description
           }))
       }
-      console.log(viewData)
+      // console.log(viewData) // se whats in the database
       res.render('snippets/index', { viewData })
     } catch (error) {
       next(error)
