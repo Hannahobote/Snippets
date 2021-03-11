@@ -49,7 +49,7 @@ export class HomeController {
             description: snippet.description
           }))
       }
-      console.log(viewData) // se whats in the database
+      //  console.log(viewData) // se whats in the database
       res.render('snippets/index', { viewData })
     } catch (error) {
       next(error)
@@ -176,7 +176,7 @@ export class HomeController {
       }
       res.redirect('..')
     } catch (error) {
-      req.session.flash = { type: 'danger', text: error.message }
+     //  req.session.flash = { type: 'danger', text: error.message }
       res.redirect('./edit')
     }
   }
@@ -193,11 +193,11 @@ export class HomeController {
       const viewData = {
         id: snippet._id,
         description: snippet.description,
-        done: snippet.done
+        done: snippet.done === true
       }
       res.render('snippets/remove', { viewData })
     } catch (error) {
-      req.session.flash = { type: 'danger', text: error.message }
+      // req.session.flash = { type: 'danger', text: error.message }
       res.redirect('..')
     }
   }
@@ -213,9 +213,10 @@ export class HomeController {
       await Snippets.deleteOne({ _id: req.body.id })
 
       req.session.flash = { type: 'success', text: 'The snippet was deleted successfully.' }
+      console.log('delete has been called')
       res.redirect('..')
     } catch (error) {
-      req.session.flash = { type: 'danger', text: error.message }
+      // req.session.flash = { type: 'danger', text: error.message }
       res.redirect('./remove')
     }
   }

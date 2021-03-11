@@ -1,0 +1,14 @@
+<h1>
+  <span class="far fa-trash-alt"> Remove </span>
+</h1>
+
+<form method="post" action="./{{viewData.snippets.id}}delete">
+
+  <ul class="list-group gap-3">
+    <h6>{{viewData.title}} written by {{viewData.id}}</h6>
+    <li class="list-group-item">{{viewData.description}}</li>
+  </ul>
+  </div>
+  <br>
+  <button type="submit" class="btn btn-lg btn-primary" autofocus="autofocus">Delete Snippet</button>
+</form>

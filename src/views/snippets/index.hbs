@@ -7,9 +7,13 @@
     <h6>{{title}} written by {{id}}</h6>
     <li class="list-group-item">{{description}}</li>
   </ul>
-  <div class="d-grid gap-2 d-md-block"></div>
-  <button type="submit" class="btn btn-lg btn-success"> edit</button>
-  <button type="submit" class="btn btn-lg btn-danger"> delete</button>
+  <div class="d-grid gap-2 d-md-block">
+    <form method="post" action="./{{id}}/update">
+      <button type="submit" class="btn btn-lg btn-success"> edit</button>
+    </form>
+  <form method="post" action="./{{id}}/delete">
+    <button type="submit" class="btn btn-lg btn-danger"> delete</button>
+  </form>
   </div>
 {{/each}}
 

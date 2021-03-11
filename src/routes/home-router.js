@@ -11,3 +11,5 @@ router.get('/', controller.index)
 router.get('/login', controller.login)
 
 router.get('/create-account', controller.createAccount)
+
+router.get('/remove', controller.remove)
