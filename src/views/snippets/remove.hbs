@@ -2,7 +2,7 @@
   <span class="far fa-trash-alt"> Remove </span>
 </h1>
 
-<form method="post" action="./{{viewData.snippets.id}}delete">
+<!--<form method="post" action="./{{viewData.snippets.id}}delete">
 
   <ul class="list-group gap-3">
     <h6>{{viewData.title}} written by {{viewData.id}}</h6>
@@ -10,5 +10,22 @@
   </ul>
   </div>
   <br>
+  <button type="submit" class="btn btn-lg btn-primary" autofocus="autofocus">Delete Snippet</button>
+</form> -->
+
+
+<form method="post" action="./delete">
+<h6>{{viewData.title}} written by {{viewData.id}}</h6>
+  <div class="form-group">
+   <!-- <input type="text" class="form-control" name="description" value="{{viewData.description}}" readonly="readonly" />-->
+   
+  <ul class="list-group gap-3">
+    <li class="list-group-item">{{viewData.description}}</li>
+  </ul>
+  </div>
+  <br>
+  <!--<div class="form-group">
+    <input type="checkbox" class="form-control" name="done" {{#if viewData.done }} checked="checked" {{/if}} readonly="readonly" />
+  </div>-->
   <button type="submit" class="btn btn-lg btn-primary" autofocus="autofocus">Delete Snippet</button>
 </form>
