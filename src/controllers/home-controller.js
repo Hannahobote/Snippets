@@ -188,14 +188,15 @@ export class HomeController {
    *
    * @param {object} req - Express request obj.
    * @param {object} res - Express response obj.
+   * @param {Function} next - Express next middleware function.
    */
-  async delete (req, res) {
+  async delete (req, res, next) {
     try {
-      await Snippets.deleteOne({ _id: req.body.id })
+      await Snippets.deleteOne({ _id: req.params.id })
 
       // req.session.flash = { type: 'success', text: 'The snippet was deleted successfully.' }
       res.redirect('..')
-      console.log(await Snippets.deleteOne({ _id: req.body.id }), 'snippet has been removed')
+      console.log(req.params.id, 'snippet has been removed')
     } catch (error) {
       console.log('something went wrong')
       console.log(error)
