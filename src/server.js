@@ -88,7 +88,7 @@ const main = async () => {
   app.use('/', router)
 
   // Error handler.
-  /* app.use(function (err, req, res, next) {
+  app.use(function (err, req, res, next) {
     // 404 Not Found.
     if (err.status === 404) {
       return res
@@ -110,14 +110,14 @@ const main = async () => {
     res
       .status(err.status || 500)
       .render('errors/error', { error: err })
-  }) */
+  })
 
   // Error handler.
-   app.use(function (err, req, res, next) {
+  /* app.use(function (err, req, res, next) {
     res
       .status(err.status || 500)
       .send(err.message || 'Internal Server Error')
-  })
+  }) */
 
   // Starts the HTTP server listening for connections.
   app.listen(process.env.PORT, () => {
