@@ -88,7 +88,7 @@ export class HomeController {
       req.session.flash = { type: 'success', text: 'The snippet was created successfully.' }
       res.redirect('.')
     } catch (error) {
-      // req.session.flash = { type: 'danger', text: error.message }
+      req.session.flash = { type: 'danger', text: error.message }
       res.redirect('./new')
     }
   }
@@ -127,7 +127,7 @@ export class HomeController {
       console.log('The snippet was updated successfully')
       res.render('snippets/edit', { viewData })
     } catch (error) {
-      //  req.session.flash = { type: 'danger', text: error.message }
+      req.session.flash = { type: 'danger', text: error.message }
       res.redirect('..')
     }
   }
@@ -156,7 +156,7 @@ export class HomeController {
       res.redirect('..')
     } catch (error) {
       console.log('there was an error')
-      //  req.session.flash = { type: 'danger', text: error.message }
+      req.session.flash = { type: 'danger', text: error.message }
       res.redirect('./edit')
     }
   }
@@ -179,7 +179,7 @@ export class HomeController {
     } catch (error) {
       console.log('something went wrong')
       console.log(error)
-      // req.session.flash = { type: 'danger', text: error.message }
+      req.session.flash = { type: 'danger', text: error.message }
       res.redirect('..')
     }
   }
@@ -196,7 +196,7 @@ export class HomeController {
       await Snippets.deleteOne({ _id: req.params.id })
       req.session.flash = { type: 'success', text: 'The snippet was deleted successfully.' }
       res.redirect('..')
-      // console.log(req.params.id, 'snippet has been removed. flash')
+      console.log(req.params.id, 'snippet has been removed')
     } catch (error) {
       req.session.flash = { type: 'danger', text: error.message }
       res.redirect('./remove')
