@@ -1,5 +1,6 @@
 import moment from 'moment'
 import { Snippets } from '../models/snippets.js'
+import '../server.js'
 /* const data1 = [
   {
     title: 'php',
@@ -66,6 +67,7 @@ export class HomeController {
       description: '',
       done: false
     }
+
     res.render('snippets/new', { viewData })
   }
 
@@ -83,11 +85,10 @@ export class HomeController {
       })
 
       await snippet.save()
-
       req.session.flash = { type: 'success', text: 'The snippet was created successfully.' }
       res.redirect('.')
     } catch (error) {
-    //  req.session.flash = { type: 'danger', text: error.message }
+      // req.session.flash = { type: 'danger', text: error.message }
       res.redirect('./new')
     }
   }
@@ -193,14 +194,11 @@ export class HomeController {
   async delete (req, res, next) {
     try {
       await Snippets.deleteOne({ _id: req.params.id })
-
-      // req.session.flash = { type: 'success', text: 'The snippet was deleted successfully.' }
+      req.session.flash = { type: 'success', text: 'The snippet was deleted successfully.' }
       res.redirect('..')
-      console.log(req.params.id, 'snippet has been removed')
+      // console.log(req.params.id, 'snippet has been removed. flash')
     } catch (error) {
-      console.log('something went wrong')
-      console.log(error)
-      // req.session.flash = { type: 'danger', text: error.message }
+      req.session.flash = { type: 'danger', text: error.message }
       res.redirect('./remove')
     }
   }

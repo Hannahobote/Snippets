@@ -5,9 +5,9 @@ export const router = express.Router()
 
 const controller = new HomeController()
 
-router.get('/', controller.index)
-router.post('/', controller.indexPost)
+router.get('/', (req, res, next) => controller.index(req, res, next))
+router.post('/', (req, res, next) => controller.indexPost(req, res, next))
 
-router.get('/login', controller.login)
+router.get('/login', (req, res, next) => controller.login(req, res, next))
 
- router.get('/create-account', controller.createAccount)
+router.get('/create-account', (req, res, next) => controller.createAccount(req, res, next))

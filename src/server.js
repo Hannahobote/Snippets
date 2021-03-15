@@ -40,36 +40,6 @@ const main = async () => {
   // Serve static files.
   app.use(express.static(join(directoryFullName, '..', 'public')))
 
-  // Register routes.
-  app.use('/', router)
-
-  // Error handler.
-  app.use(function (err, req, res, next) {
-    res
-      .status(err.status || 500)
-      .send(err.message || 'Internal Server Error')
-  })
-
-  // Starts the HTTP server listening for connections.
-  app.listen(process.env.PORT, () => {
-    console.log(`Server running at http://localhost:${process.env.PORT}`)
-    console.log('Press Ctrl-C to terminate...')
-  })
-
-  /* check if you need this............................................................................ */
-
-  // Set various HTTP headers to make the application little more secure (https://www.npmjs.com/package/helmet).
-  // (The web application uses external scripts and therefore needs to explicitly trust on code.jquery.com and cdn.jsdelivr.net.)
-  app.use(helmet())
-  app.use(
-    helmet.contentSecurityPolicy({
-      directives: {
-        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-        'script-src': ["'self'", 'code.jquery.com', 'cdn.jsdelivr.net']
-      }
-    })
-  )
-
   // Setup and use session middleware (https://github.com/expressjs/session).
   const sessionOptions = {
     name: process.env.SESSION_NAME, // Don't use default session cookie name.
@@ -81,11 +51,6 @@ const main = async () => {
       maxAge: 1000 * 60 * 60 * 24, // 1 day
       sameSite: 'lax'
     }
-  }
-
-  if (app.get('env') === 'production') {
-    app.set('trust proxy', 1) // trust first proxy
-    sessionOptions.cookie.secure = true // serve secure cookies
   }
 
   app.use(session(sessionOptions))
@@ -101,6 +66,64 @@ const main = async () => {
     res.locals.baseURL = baseURL
     next()
   })
+
+  // Register routes.
+  app.use('/', router)
+
+  // Error handler.
+  app.use(function (err, req, res, next) {
+    // 404 Not Found.
+    if (err.status === 404) {
+      return res
+        .status(404)
+        .sendFile(join(directoryFullName, 'views', 'errors', '404.html'))
+    }
+
+    // 500 Internal Server Error (in production, all other errors send this response).
+    if (req.app.get('env') !== 'development') {
+      return res
+        .status(500)
+        .sendFile(join(directoryFullName, 'views', 'errors', '500.html'))
+    }
+
+    // Development only!
+    // Only providing detailed error in development.
+
+    // Render the error page.
+    res
+      .status(err.status || 500)
+      .render('errors/error', { error: err })
+  })
+
+  // Error handler.
+  /* app.use(function (err, req, res, next) {
+    res
+      .status(err.status || 500)
+      .send(err.message || 'Internal Server Error')
+  }) */
+
+  // Starts the HTTP server listening for connections.
+  app.listen(process.env.PORT, () => {
+    console.log(`Server running at http://localhost:${process.env.PORT}`)
+    console.log('Press Ctrl-C to terminate...')
+  })
+
+  // Set various HTTP headers to make the application little more secure (https://www.npmjs.com/package/helmet).
+  // (The web application uses external scripts and therefore needs to explicitly trust on code.jquery.com and cdn.jsdelivr.net.)
+  app.use(helmet())
+  app.use(
+    helmet.contentSecurityPolicy({
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        'script-src': ["'self'", 'code.jquery.com', 'cdn.jsdelivr.net']
+      }
+    })
+  )
+
+  if (app.get('env') === 'production') {
+    app.set('trust proxy', 1) // trust first proxy
+    sessionOptions.cookie.secure = true // serve secure cookies
+  }
 }
 
 main().catch(console.error)
