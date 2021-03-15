@@ -22,6 +22,18 @@ const main = async () => {
   // base url
   const baseURL = process.env.BASE_URL || '/'
 
+  // Set various HTTP headers to make the application little more secure (https://www.npmjs.com/package/helmet).
+  // (The web application uses external scripts and therefore needs to explicitly trust on code.jquery.com and cdn.jsdelivr.net.)
+  app.use(helmet())
+  app.use(
+    helmet.contentSecurityPolicy({
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        'script-src': ["'self'", 'code.jquery.com', 'cdn.jsdelivr.net']
+      }
+    })
+  )
+
   // Set up a morgan logger using the dev format for log entries.
   app.use(logger('dev'))
 
@@ -53,6 +65,11 @@ const main = async () => {
     }
   }
 
+  if (app.get('env') === 'production') {
+    app.set('trust proxy', 1) // trust first proxy
+    sessionOptions.cookie.secure = true // serve secure cookies
+  }
+
   app.use(session(sessionOptions))
 
   // Middleware to be executed before the routes.
@@ -71,7 +88,7 @@ const main = async () => {
   app.use('/', router)
 
   // Error handler.
-  app.use(function (err, req, res, next) {
+  /* app.use(function (err, req, res, next) {
     // 404 Not Found.
     if (err.status === 404) {
       return res
@@ -93,32 +110,20 @@ const main = async () => {
     res
       .status(err.status || 500)
       .render('errors/error', { error: err })
-  })
+  }) */
 
   // Error handler.
-  /* app.use(function (err, req, res, next) {
+   app.use(function (err, req, res, next) {
     res
       .status(err.status || 500)
       .send(err.message || 'Internal Server Error')
-  }) */
+  })
 
   // Starts the HTTP server listening for connections.
   app.listen(process.env.PORT, () => {
     console.log(`Server running at http://localhost:${process.env.PORT}`)
     console.log('Press Ctrl-C to terminate...')
   })
-
-  // Set various HTTP headers to make the application little more secure (https://www.npmjs.com/package/helmet).
-  // (The web application uses external scripts and therefore needs to explicitly trust on code.jquery.com and cdn.jsdelivr.net.)
-  app.use(helmet())
-  app.use(
-    helmet.contentSecurityPolicy({
-      directives: {
-        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-        'script-src': ["'self'", 'code.jquery.com', 'cdn.jsdelivr.net']
-      }
-    })
-  )
 
   if (app.get('env') === 'production') {
     app.set('trust proxy', 1) // trust first proxy
