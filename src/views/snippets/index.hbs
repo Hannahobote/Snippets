@@ -3,10 +3,20 @@
 </div>
 {{#if viewData.snippet}}
 <ul class="list-group gap-3">
-  {{#each viewData.snippet}}
-  <h6>{{title}} written by {{id}}</h6>
-  <li class="list-group-item">{{description}}</li>
+    {{#each viewData.snippet}}
+      <h6>{{title}} written by {{id}}</h6>
+    <div class="form-floating list-group-item">
+      <textarea 
+      readonly
+      class="form-control-plaintext" 
+      id="floatingTextarea" 
+      cols="100" 
+      rows="5">
+      {{description}}
+      </textarea>
+  </div>
 </ul>
+
 <div class="d-grid gap-2 d-md-block">
   <a href="./{{id}}/edit"><span class="far fa-edit btn btn-lg btn-success"> edit</span></a>
   <a href="./{{id}}/remove"><span class="far fa-trash-alt btn btn-lg btn-danger">delete</span></a>

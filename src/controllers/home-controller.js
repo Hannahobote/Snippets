@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { Snippets } from '../models/snippets.js'
-import '../server.js'
+// import '../server.js'
 /* const data1 = [
   {
     title: 'php',

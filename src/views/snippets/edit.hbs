@@ -2,11 +2,25 @@
   <span class="far fa-edit"></span> Edit
 </h3>
  <h6>{{viewData.title}} written by {{viewData.id}}</h6>
-<form method="post" action="./{{viewData.id}}/update">
+<form method="post" action="./{{viewData.id}}/update" for="multiline">
   <input type="hidden" name="id" value="{{viewData.id}}" />
+
   <div class="form-group">
-    <input type="text" class="form-control" name="description" placeholder="Update task description here" value="{{viewData.description}}" required="required" autofocus="autofocus" />
-  </div>
+    <textarea type="text" 
+    class="form-control" 
+    name="description" 
+    placeholder="Update snippethere" 
+    required="required" 
+    autofocus="autofocus"
+    cols="100" 
+    rows="5">
+    {{viewData.description}}
+    </textarea>
+
+   <!-- <input type="text" 
+    class="form-control" 
+    name="description" placeholder="Update task description here" value="{{viewData.description}}" required="required" autofocus="autofocus" />
+  </div>-->
   <br>
   <button type="submit" class="btn btn-lg btn-primary">Update Snippet</button>
 </form>
