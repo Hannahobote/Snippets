@@ -2,20 +2,17 @@
   <h4 class="d-flex justify-content-center p-2">Welcome to Snippets, where you can save your snippets for free!</h4>
 </div>
 {{#if viewData.snippet}}
-<ul class="list-group gap-3">
+
     {{#each viewData.snippet}}
       <h6>{{title}} written by {{id}}</h6>
-    <div class="form-floating list-group-item">
       <textarea 
       readonly
-      class="form-control-plaintext" 
-      id="floatingTextarea" 
+      class="form-control" 
       cols="100" 
-      rows="5">
+      rows="7">
       {{description}}
       </textarea>
-  </div>
-</ul>
+
 
 <div class="d-grid gap-2 d-md-block">
   <a href="./{{id}}/edit"><span class="far fa-edit btn btn-lg btn-success"> edit</span></a>

@@ -122,7 +122,7 @@ export class HomeController {
       const viewData = {
         id: snippet._id,
         description: snippet.description,
-        done: snippet.title
+        title: snippet.title
       }
       console.log('The snippet was updated successfully')
       res.render('snippets/edit', { viewData })

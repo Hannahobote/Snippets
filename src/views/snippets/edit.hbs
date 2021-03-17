@@ -2,8 +2,14 @@
   <span class="far fa-edit"></span> Edit
 </h3>
  <h6>{{viewData.title}} written by {{viewData.id}}</h6>
-<form method="post" action="./{{viewData.id}}/update" for="multiline">
-  <input type="hidden" name="id" value="{{viewData.id}}" />
+<form method="post" action="./{{viewData.id}}/update">
+ <!--edit title ?-->
+  
+  <input type="text" 
+  class="form-control mt-3 mb-3" 
+  name="title" 
+  value="{{viewData.title}}"
+  autofocus="autofocus"/>
 
   <div class="form-group">
     <textarea type="text" 

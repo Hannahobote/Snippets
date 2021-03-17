@@ -4,5 +4,24 @@ import { User } from '../models/user.js'
  * Authenticate and authorasation class.
  */
 class UserController {
+  /**
+   *
+   */
+  login () {
 
+  }
+
+  /**
+   *
+   */
+  logout () {
+
+  }
+
+  /**
+   *
+   */
+  createAccount () {
+
+  }
 }
