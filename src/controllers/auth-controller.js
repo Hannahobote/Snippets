@@ -1,15 +1,15 @@
-import moment from 'moment'
-import { User } from '../models/user.js'
+import { UserController } from '../controllers/user-controller.js'
 /**
  * Authenticate and authorasation class.
  */
-class AuthController {
+export class AuthController {
 /**
  * Authorize.
  *
  * @param {object} req - Express request object.
  * @param {object} res - Express response object.
  * @param {Function} next - Express next middleware function.
+ * @returns {Function} next.
  */
   async authorize (req, res, next) {
     try {
@@ -33,16 +33,17 @@ class AuthController {
    * @param {Function} next - Express next middleware function.
    */
   async loginPost (req, res, next) {
-    try {
-      const user = await User.authenticate(username, password)
-      req.session.regenerate(() => {
-        req.session.authenticated = true
-        req.session.username = username
-        req.session.userId = user._id
-        res.redirect('./')
-      })
-    } catch (error) {
-      console.log(error)
-    }
+
+  }
+
+  /**
+   * Authorize.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param {Function} next - Express next middleware function.
+   */
+  async test (req, res, next) {
+    const user = new UserController()
   }
 }

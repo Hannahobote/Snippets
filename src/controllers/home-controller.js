@@ -1,5 +1,6 @@
 import moment from 'moment'
 import { Snippets } from '../models/snippets.js'
+import { UserController } from '../controllers/user-controller.js'
 // import '../server.js'
 /* const data1 = [
   {
@@ -201,27 +202,5 @@ export class HomeController {
       req.session.flash = { type: 'danger', text: error.message }
       res.redirect('./remove')
     }
-  }
-
-  /**
-   * Redirect to create account.
-   *
-   * @param {object} req - Express request object.
-   * @param {object} res - Express response object.
-   * @param {Function} next - Express next middleware function.
-   */
-  async createAccount (req, res, next) {
-    res.render('snippets/create-account')
-  }
-
-  /**
-   * Redirect to login.
-   *
-   * @param {object} req - Express request object.
-   * @param {object} res - Express response object.
-   * @param {Function} next - Express next middleware function.
-   */
-  async login (req, res, next) {
-    res.render('snippets/login')
   }
 }
