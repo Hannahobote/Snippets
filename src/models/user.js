@@ -21,16 +21,16 @@ export const userSchema = new mongoose.Schema({
 })
 
 // salts and hashes the passoword
-/* userSchema.pre('save', async () => {
+userSchema.pre('save', async function () {
   this.password = await bcrypt.hash(this.password, 8)
-}) */
+})
 
 export const User = mongoose.model('User', userSchema)
 
-/* userSchema.statics.authenticate = async function (username, password) {
+userSchema.statics.authenticate = async function (username, password) {
   const user = await this.findOne({ username })
   if (!user || !(await bcrypt.compare(password, user.password))) {
     throw new Error('Invalid login attempt')
   }
   return user
-} */
+}
