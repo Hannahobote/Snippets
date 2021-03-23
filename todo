@@ -11,14 +11,20 @@
   4. view created snippets from other users
 
 ### login  
-  a. prevent submit
-  1. view for login 
-  2. in header make button to log out 
+  [x] a. prevent submit
+  [x] 1. view for login 
+  [x] 2. in header make button to log out 
+  []  3. add flash messaqge when user is logged in
+  [] 4. user can edit the snipptes they made themselves.!!!
 
 
 ### create account
+  [] 1. user should be able to create account
+  [] 2. hash password!
+  [] 3. add flash messaqge when account is created 
   
-
+### logout
+  [] 1. User should be able to logout!
 
 ### nav bar
   1. if logged in, show navbar 
