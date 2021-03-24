@@ -21,15 +21,16 @@ export const userSchema = new mongoose.Schema({
 })
 
 // salts and hashes the passoword
-/* userSchema.pre('save', async function () {
+userSchema.pre('save', async function () {
   this.password = await bcrypt.hash(this.password, 8)
-}) */ 
-
-export const User = mongoose.model('User', userSchema)
+})
 
 /**
- * @param username
- * @param password
+ * Auth func.
+ *
+ * @param {string} username user.
+ * @param {string} password password.
+ * @returns {object} user.
  */
 userSchema.statics.authenticate = async function (username, password) {
   const user = await this.findOne({ username })
@@ -38,3 +39,5 @@ userSchema.statics.authenticate = async function (username, password) {
   }
   return user
 }
+
+export const User = mongoose.model('User', userSchema)

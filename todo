@@ -22,6 +22,7 @@
   [] 1. user should be able to create account
   [] 2. hash password!
   [] 3. add flash messaqge when account is created 
+  [] 4. inform user if password is to short 
   
 ### logout
   [] 1. User should be able to logout!

@@ -14,18 +14,10 @@ export class UserController {
    */
   async createAccount (req, res, next) {
     try {
-      // Hash and salt the password.
-      await bcrypt.hash(req.body.password, 10).then(function (hash) {
-        // Create a new user.
-        const user = new User({
-          username: req.body.username,
-          password: hash
-        })
-        // save user to database.
-        user.save()
-        console.log('from create function', user)
-      })
-      res.render('snippets/create-account')
+      const user = new User(req.body)
+      console.log(user)
+      user.save()
+      res.render('snippets/test')
     } catch (error) {
       console.log(error)
     }
@@ -41,15 +33,21 @@ export class UserController {
   async login (req, res, next) {
     try {
       // find user in database
-      const user = await User.findOne({ username: req.body.username })
-      // const hashedPassword = await bcrypt.hash(req.body.password, 10
+      const body = req.body
+      const user = await User.findOne({ username: body.username })
       if (user) {
-        // const validPassword = await bcrypt.compare(req.body.password, user.password)
-        console.log('password is correct')
+        // check user password with hashed password stored in the database
+        const validPassword = await bcrypt.compare(body.password, user.password)
+        if (validPassword) {
+          // render view that informs that the user is logged in
+          res.render('snippets/test')
+          console.log('valid password', { username: user.username, hash: user.password })
+        } else {
+          res.status(400).json({ error: 'Invalid Password' })
+        }
       } else {
-        console.log('not in db')
+        res.status(401).json({ error: 'User does not exist' })
       }
-      res.render('snippets/login')
     } catch (error) {
       res.status(500).send()
       console.log(error)
@@ -76,7 +74,7 @@ export class UserController {
    */
   logout (req, res, next) {
     try {
-      console.log(req.session.username)
+      console.log(req.sessionID)
       delete req.session.user
       if (!req.session.user) {
         req.session.flash = { type: 'success', text: 'Logout successful.' }
