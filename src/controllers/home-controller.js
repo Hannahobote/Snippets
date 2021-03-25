@@ -1,6 +1,5 @@
 import moment from 'moment'
 import { Snippets } from '../models/snippets.js'
-import { UserController } from '../controllers/user-controller.js'
 // import '../server.js'
 /* const data1 = [
   {
@@ -128,6 +127,7 @@ export class HomeController {
       console.log('The snippet was updated successfully')
       res.render('snippets/edit', { viewData })
     } catch (error) {
+      console.log(error)
       req.session.flash = { type: 'danger', text: error.message }
       res.redirect('..')
     }

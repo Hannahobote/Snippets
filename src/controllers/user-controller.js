@@ -33,23 +33,33 @@ export class UserController {
   async login (req, res, next) {
     try {
       // find user in database
-      const body = req.body
-      const user = await User.findOne({ username: body.username })
+      const user = await User.findOne({ username: req.body.username })
+      // if database can find user
       if (user) {
         // check user password with hashed password stored in the database
-        const validPassword = await bcrypt.compare(body.password, user.password)
+        const validPassword = await bcrypt.compare(req.body.password, user.password)
+        // if the password is valid
         if (validPassword) {
-          // render view that informs that the user is logged in
-          res.render('snippets/test')
-          console.log('valid password', { username: user.username, hash: user.password })
+          req.session.regenerate(() => {
+            // informs that user is logged in
+            req.session.authenticated = true
+            req.session.username = user.username
+            req.session.userId = user._id
+            req.session.flash = { type: 'success', text: 'Login successful.' }
+            res.redirect('.')
+            console.log(req.session)
+          })
         } else {
-          res.status(400).json({ error: 'Invalid Password' })
+          req.session.flash = { type: 'danger', text: 'Username or password is incorrect.' }
+          throw new Error('Error 403 Wrong Login')
         }
       } else {
-        res.status(401).json({ error: 'User does not exist' })
+        req.session.flash = { type: 'danger', text: 'User does not exist.' }
+        throw new Error('Error 403 User does not exist')
       }
     } catch (error) {
-      res.status(500).send()
+      error.status = 403
+      next(error)
       console.log(error)
     }
   }
@@ -74,11 +84,13 @@ export class UserController {
    */
   logout (req, res, next) {
     try {
-      console.log(req.sessionID)
-      delete req.session.user
-      if (!req.session.user) {
+      delete req.session.username
+      if (!req.session.username) {
+        // informs that user is not logged in
+        req.session.authenticated = false
+        req.session.userId = null
         req.session.flash = { type: 'success', text: 'Logout successful.' }
-        console.log('user logged out', req.session.username)
+        console.log(req.session)
         res.redirect('..')
       }
     } catch (error) {

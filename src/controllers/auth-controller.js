@@ -1,10 +1,11 @@
-import { UserController } from '../controllers/user-controller.js'
+import bcrypt from 'bcrypt'
+import { User } from '../models/user.js'
 /**
  * Authenticate and authorasation class.
  */
 export class AuthController {
 /**
- * Authorize.
+ * Authorize: give certain access to user.
  *
  * @param {object} req - Express request object.
  * @param {object} res - Express response object.
@@ -13,11 +14,16 @@ export class AuthController {
  */
   async authorize (req, res, next) {
     try {
+      const user = await User.findOne({ username: req.session.username })
+      console.log(req.session, user)
       if (!req.session.authenticated) {
+        console.log('user is not authorized')
         const error = new Error('Not found')
         error.status = 404
-        error.message = 'Page not found.'
+        error.message = 'User must be logged in to create snippet'
         return next(error)
+      } else {
+        console.log('user is authorized')
       }
       next()
     } catch (error) {
@@ -26,24 +32,25 @@ export class AuthController {
   }
 
   /**
-   * Login post.
+   * Authenticate user: check if email and passowrd is correct.
    *
-   * @param {object} req - Express request object.
-   * @param {object} res - Express response object.
-   * @param {Function} next - Express next middleware function.
+   * @param {*} req req.
+   * @param {*} res res.
+   * @param {*} next func.
+   * @returns {object} user
    */
-  async loginPost (req, res, next) {
+  async authenticate (req, res, next) {
+    const user = await User.findOne({ username: req.body.username })
+    if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
+      throw new Error('Invalid login attempt')
+    }
 
-  }
-
-  /**
-   * Authorize.
-   *
-   * @param {object} req - Express request object.
-   * @param {object} res - Express response object.
-   * @param {Function} next - Express next middleware function.
-   */
-  async test (req, res, next) {
-    const user = new UserController()
+    req.session.regenerate(() => {
+      req.session.authenticated = true
+      req.session.username = user.username
+      req.session.userId = user._id
+      res.redirect('./')
+    })
+    return user
   }
 }

@@ -1,6 +1,4 @@
 import express from 'express'
-import { User } from '../models/user.js'
-import bcrypt from 'bcrypt'
 import { HomeController } from '../controllers/home-controller.js'
 import { UserController } from '../controllers/user-controller.js'
 
@@ -18,6 +16,7 @@ router.get('/create-account-form', async (req, res, next) => {
 })
 // post form to create account
 router.post('/create-account', (req, res, next) => user.createAccount(req, res, next))
+
 // renders login form to login user
 router.get('/login-form', async (req, res, next) => {
   res.render('snippets/login')
@@ -26,6 +25,7 @@ router.get('/login-form', async (req, res, next) => {
 router.post('/login', (req, res, next) => user.login(req, res, next))
 // renders a view that informs the user thats its logged in.
 router.post('/test', (req, res, next) => user.test(req, res, next))
+
 // views a button option for the user to log out.
 router.get('/pre-logout', (req, res, next) => user.preLogout(req, res, next))
 // user logsout

@@ -27,6 +27,12 @@
 ### logout
   [] 1. User should be able to logout!
 
+### Auth
+  [] 0. if user is auth + user id is the same as created user id, then let them edit and delete
+  [] 1. allow user to create snippet and see other snippets.
+  [] 2. allow user to edit own snippet
+  [] 2. allow user to delete own snippet
+
 ### nav bar
   1. if logged in, show navbar 
 
