@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-// import { v4 as uuidv4 } from 'uuid'
 
 export const SnippetsSchema = new mongoose.Schema({
   name: {
@@ -21,6 +20,10 @@ export const SnippetsSchema = new mongoose.Schema({
   done: {
     type: Boolean,
     required: false
+  },
+  author: {
+    type: String,
+    required: true
   }
 }, {
   timestamps: true

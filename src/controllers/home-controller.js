@@ -1,32 +1,5 @@
 import moment from 'moment'
 import { Snippets } from '../models/snippets.js'
-// import '../server.js'
-/* const data1 = [
-  {
-    title: 'php',
-    user: 'member1',
-    id: 'linda',
-    description: 'hello world, im member 1 ',
-    snippet: `
-    temp = $1
-    $1 = $2
-    $2 = temp
-    `,
-    done: false
-  },
-  {
-    title: ' java ',
-    user: 'member2',
-    id: 'Hannah',
-    description: 'im ´member 2',
-    snippet: `
-    temp = x
-    x = y
-    y = temp
-    `,
-    done: false
-  }
-] */
 
 /**
  *Hi.
@@ -46,10 +19,11 @@ export class HomeController {
           .map(snippet => ({
             id: snippet._id,
             title: snippet.title,
-            description: snippet.description
+            description: snippet.description,
+            author: snippet.author
           }))
       }
-      //  console.log(viewData) // se whats in the database
+      console.log(viewData) // se whats in the database
       res.render('snippets/index', { viewData })
     } catch (error) {
       next(error)
@@ -78,12 +52,13 @@ export class HomeController {
    * @param {object} res - Express response obj.
    */
   async create (req, res) {
+    console.log('from create function', req.session.username)
     try {
       const snippet = new Snippets({
         description: req.body.description,
-        title: req.body.title
+        title: req.body.title,
+        author: req.session.username
       })
-
       await snippet.save()
       req.session.flash = { type: 'success', text: 'The snippet was created successfully.' }
       res.redirect('.')
@@ -124,7 +99,6 @@ export class HomeController {
         description: snippet.description,
         title: snippet.title
       }
-      console.log('The snippet was updated successfully')
       res.render('snippets/edit', { viewData })
     } catch (error) {
       console.log(error)
@@ -148,11 +122,9 @@ export class HomeController {
 
       if (result.nModified === 1) {
         req.session.flash = { type: 'success', text: 'The snippet was updated successfully.' }
+        console.log('The snippet was updated successfully')
       } else {
-        req.session.flash = {
-          type: 'danger',
-          text: 'The snippet you attempted to update was removed by another user after you got the original values.'
-        }
+        req.session.flash = { type: 'danger', text: 'Failed to update snippet' }
       }
       res.redirect('..')
     } catch (error) {

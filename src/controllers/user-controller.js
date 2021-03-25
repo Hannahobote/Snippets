@@ -17,7 +17,8 @@ export class UserController {
       const user = new User(req.body)
       console.log(user)
       user.save()
-      res.render('snippets/test')
+      res.render('snippets/index')
+      req.session.flash = { type: 'success', text: 'Account has been created' }
     } catch (error) {
       console.log(error)
     }
@@ -71,7 +72,16 @@ export class UserController {
    * @param {object} res - Express response object.
    * @param {Function} next - Express next middleware.
    */
-  preLogout (req, res, next) {
+  async preLogout (req, res, next) {
+    const viewData = {
+      users: (await User.find({}))
+        .map(user => ({
+          id: user._id,
+          username: user.username,
+          password: user.password
+        }))
+    }
+    console.log(viewData) // se whats in the database
     res.render('snippets/pre-logout')
   }
 

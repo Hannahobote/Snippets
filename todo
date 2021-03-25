@@ -14,14 +14,14 @@
   [x] a. prevent submit
   [x] 1. view for login 
   [x] 2. in header make button to log out 
-  []  3. add flash messaqge when user is logged in
+  [X]  3. add flash messaqge when user is logged in
   [] 4. user can edit the snipptes they made themselves.!!!
 
 
 ### create account
-  [] 1. user should be able to create account
-  [] 2. hash password!
-  [] 3. add flash messaqge when account is created 
+  [X] 1. user should be able to create account
+  [X] 2. hash password!
+  [] 3. add flash message when account is created 
   [] 4. inform user if password is to short 
   
 ### logout
@@ -39,6 +39,7 @@
 ### error 
   1. 404.html
   2. 500.hbs - för att skcika data
+  3. RENDER ERROR PAGE WHEN ERROR OCCUSRS!
 
 
 ### .env

@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt'
 import { User } from '../models/user.js'
+import { Snippets } from '../models/snippets.js'
 /**
  * Authenticate and authorasation class.
  */
@@ -14,8 +15,6 @@ export class AuthController {
  */
   async authorize (req, res, next) {
     try {
-      const user = await User.findOne({ username: req.session.username })
-      console.log(req.session, user)
       if (!req.session.authenticated) {
         console.log('user is not authorized')
         const error = new Error('Not found')
@@ -24,6 +23,33 @@ export class AuthController {
         return next(error)
       } else {
         console.log('user is authorized')
+      }
+      next()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  /**
+   * User can edit,delete.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param {Function} next - Express next middleware function.
+   * @returns {Function} next.
+   */
+  async userPremission (req, res, next) {
+    try {
+      const author = await Snippets.find({}).map(data => data.title)
+      if (req.session.authenticated && req.session.username === author.author) {
+        console.log(req.session.username, author)
+        console.log('user is can edit')
+      } else {
+        console.log(req.session.username, author)
+        console.log('user cannot edit')
+        const error = new Error('Not found')
+        error.status = 404
+        return next(error)
       }
       next()
     } catch (error) {
