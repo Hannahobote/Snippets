@@ -121,10 +121,9 @@ export class UserController {
       delete req.session.username
       if (!req.session.username) {
         // informs that user is not logged in
-        // req.session.authenticated = false
-        // req.session.userId = null
-        req.session = null
-        //  req.session.flash = { type: 'success', text: 'Logout successful.' }
+        req.session.authenticated = false
+        req.session.userId = null
+        req.session.flash = { type: 'success', text: 'Logout successful.' }
         console.log(req.session)
         res.redirect('..')
       }

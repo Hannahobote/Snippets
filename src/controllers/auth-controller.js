@@ -16,10 +16,10 @@ export class AuthController {
   async authorize (req, res, next) {
     try {
       if (!req.session.authenticated) {
-        console.log('user is not authorized')
-        const error = new Error('Not found')
+        console.log('user must be logged in')
+        const error = new Error('Not found. User must be logged in')
         error.status = 404
-        return next(error)
+        error.message = 'Page not found.'
       }
       next()
     } catch (error) {
@@ -37,23 +37,16 @@ export class AuthController {
    */
   async userPremission (req, res, next) {
     try {
-      let author = {
-        tasks: (await Snippets.find({}))
-          .map(task => ({
-            id: task._id,
-            description: task.description,
-            author: task.author
-          }))
-      }
-      author = author.tasks.filter(person => person.author === req.session.username)
-      author = author.map(person => person.author)
-
-      if (req.session.authenticated && req.session.username === author[0]) {
-        console.log(req.session.username, author[0])
-        console.log('user is can edit')
+      // get the current snippet
+      let snippet = await Snippets.findOne({ _id: req.params.id })
+      // rename to the snippets author
+      snippet = snippet.author
+      if (req.session.authenticated && req.session.username === snippet) {
+        console.log(req.session.username, snippet)
+        console.log('user can edit/delete')
       } else {
-        console.log(author[0])
-        console.log('user cannot edit')
+        console.log(req.session.username, snippet)
+        console.log('user cannot edit/delete')
         const error = new Error('Not found')
         error.status = 404
         return next(error)

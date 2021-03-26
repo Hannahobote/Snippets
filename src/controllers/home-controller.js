@@ -123,9 +123,9 @@ export class HomeController {
       if (result.nModified === 1) {
         req.session.flash = { type: 'success', text: 'The snippet was updated successfully.' }
         console.log('The snippet was updated successfully')
-      } else {
+      } /* else {
         req.session.flash = { type: 'danger', text: 'Failed to update snippet' }
-      }
+      } */
       res.redirect('..')
     } catch (error) {
       console.log('there was an error')

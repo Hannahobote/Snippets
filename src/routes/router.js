@@ -18,8 +18,8 @@ router.post('/create', auth.authorize, controller.create)
 
 router.get('/:id/edit', (req, res, next) => controller.edit(req, res, next))
 // user must be authenticated + be the author of the snippet to edit the snippet.
-router.post('/:id/update', auth.userPremission, controller.update)
+router.post('/:id/update', auth.authorize, auth.userPremission, controller.update)
 
 router.get('/:id/remove', (req, res, next) => controller.remove(req, res, next))
 // user must be authenticated + be the author of the snippet to delete the snippet.
-router.post('/:id/delete', auth.userPremission, controller.delete)
+router.post('/:id/delete', auth.authorize, auth.userPremission, controller.delete)
