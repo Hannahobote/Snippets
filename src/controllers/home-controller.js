@@ -23,7 +23,7 @@ export class HomeController {
             author: snippet.author
           }))
       }
-      console.log(viewData) // se whats in the database
+      // console.log(viewData) // se whats in the database
       res.render('snippets/index', { viewData })
     } catch (error) {
       next(error)

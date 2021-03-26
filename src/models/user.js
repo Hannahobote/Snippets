@@ -19,30 +19,24 @@ export const userSchema = new mongoose.Schema({
   versionKey: false
 })
 
-// salts and hashes the passoword
+// salts and hashes the passoword before saving to database.
 userSchema.pre('save', async function () {
   this.password = await bcrypt.hash(this.password, 8)
 })
 
-/* userSchema.statics.authenticate = async function (username, password) {
+/**
+ * Auth method.
+ *
+ * @param {string} username username.
+ * @param {string} password password.
+ * @returns {object} user.
+ */
+userSchema.statics.authenticate = async function (username, password) {
   const user = await this.findOne({ username })
   if (!user || !(await bcrypt.compare(password, user.password))) {
     throw new Error('Invalid login attempt')
   }
   return user
-} *
+}
 
-/* accountController.loginPost = async (req, res, next) => {
-  try {
-    const user = User.authenticate(req.body.username, req.body.password)
-    req.session.regenerate(() => {
-      req.session.authenticated = true
-      req.session.username = user.username
-      req.session.userId = user._id
-      res.redirect('./')
-    })
-  } catch (error) {
-    console.log(error)
-  }
-} */
 export const User = mongoose.model('User', userSchema)

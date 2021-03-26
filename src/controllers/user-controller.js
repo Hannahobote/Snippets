@@ -59,8 +59,39 @@ export class UserController {
         throw new Error('Error 403 User does not exist')
       }
     } catch (error) {
-      error.status = 403
-      next(error)
+      const validationErrors = ['Invalid username/password.']
+      res.render('snippets/login', {
+        validationErrors,
+        data: { username: req.bodyusername }
+      })
+      console.log(error)
+    }
+  }
+
+  /**
+   * Authenticate user: check if email and passowrd is correct.
+   *
+   * @param {*} req req.
+   * @param {*} res res.
+   * @param {*} next func.
+   */
+  async login2 (req, res, next) {
+    const { username, password } = req.body
+    try {
+      const user = User.authenticate(username, password)
+      req.session.regenerate(() => {
+        req.session.authenticated = true
+        req.session.username = user.username
+        req.session.userId = user._id
+        req.session.flash = { type: 'success', text: 'Login successful.' }
+        res.redirect('./login-form')
+      })
+    } catch (error) {
+      const validationErrors = ['Invalid username/password.']
+      res.render('./', {
+        validationErrors,
+        data: { username: username }
+      })
       console.log(error)
     }
   }
@@ -81,7 +112,7 @@ export class UserController {
           password: user.password
         }))
     }
-    console.log(viewData) // se whats in the database
+    // console.log(viewData) // se whats in the database
     res.render('snippets/pre-logout')
   }
 
