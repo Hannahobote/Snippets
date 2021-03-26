@@ -25,7 +25,7 @@ export class UserController {
   }
 
   /**
-   *Post req to get passowrd.
+   *Authenticate User.
    *
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.
@@ -37,33 +37,26 @@ export class UserController {
       const user = await User.findOne({ username: req.body.username })
       // if database can find user
       if (user) {
-        // check user password with hashed password stored in the database
+        // compare password in db
         const validPassword = await bcrypt.compare(req.body.password, user.password)
         // if the password is valid
         if (validPassword) {
           req.session.regenerate(() => {
-            // informs that user is logged in
             req.session.authenticated = true
             req.session.username = user.username
             req.session.userId = user._id
             req.session.flash = { type: 'success', text: 'Login successful.' }
             res.redirect('.')
-            console.log(req.session)
           })
         } else {
-          req.session.flash = { type: 'danger', text: 'Username or password is incorrect.' }
-          throw new Error('Error 403 Wrong Login')
+          throw new Error('Error 403 Wrong username or password')
         }
       } else {
-        req.session.flash = { type: 'danger', text: 'User does not exist.' }
         throw new Error('Error 403 User does not exist')
       }
     } catch (error) {
-      const validationErrors = ['Invalid username/password.']
-      res.render('snippets/login', {
-        validationErrors,
-        data: { username: req.bodyusername }
-      })
+      error.status = 403
+      next(error)
       console.log(error)
     }
   }
@@ -75,7 +68,7 @@ export class UserController {
    * @param {*} res res.
    * @param {*} next func.
    */
-  async login2 (req, res, next) {
+  /* async login2 (req, res, next) {
     const { username, password } = req.body
     try {
       const user = User.authenticate(username, password)
@@ -94,7 +87,7 @@ export class UserController {
       })
       console.log(error)
     }
-  }
+  } */
 
   /**
    *Pre logout.
@@ -128,9 +121,10 @@ export class UserController {
       delete req.session.username
       if (!req.session.username) {
         // informs that user is not logged in
-        req.session.authenticated = false
-        req.session.userId = null
-        req.session.flash = { type: 'success', text: 'Logout successful.' }
+        // req.session.authenticated = false
+        // req.session.userId = null
+        req.session = null
+        //  req.session.flash = { type: 'success', text: 'Logout successful.' }
         console.log(req.session)
         res.redirect('..')
       }
