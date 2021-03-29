@@ -11,14 +11,24 @@ export class UserController {
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.
    * @param {Function} next - Express next middleware.
+   * @returns {Function} error.
    */
   async createAccount (req, res, next) {
     try {
-      const user = new User(req.body)
-      console.log(user)
-      user.save()
-      res.render('snippets/index')
-      req.session.flash = { type: 'success', text: 'Account has been created' }
+      const userDuplicate = await User.findOne({ username: req.body.username })
+      if (req.body.username === userDuplicate.username) {
+        console.log('cannot use the same email twice')
+        console.log(req.body.username, userDuplicate)
+        const error = new Error('cannot use the same email twice')
+        error.status = 404
+        return next(error)
+      } else {
+        const user = new User(req.body)
+        console.log(user, userDuplicate)
+        user.save()
+        res.render('snippets/index')
+        req.session.flash = { type: 'success', text: 'Account has been created' }
+      }
     } catch (error) {
       console.log(error)
     }
@@ -57,7 +67,10 @@ export class UserController {
           return next(error)
         }
       } else {
-        throw new Error('Error 403 User does not exist')
+        const error = new Error('User does not exist')
+        error.status = 404
+        return next(error)
+        // throw new Error('Error 404 User does not exist')
       }
     } catch (error) {
       error.status = 403
@@ -110,8 +123,9 @@ export class UserController {
           password: user.password
         }))
     } */
+    const isLoggedin = { auth: req.session.authenticated }
     // console.log(viewData) // se whats in the database
-    res.render('snippets/pre-logout')
+    res.render('snippets/pre-logout', { isLoggedin })
   }
 
   /**
@@ -120,9 +134,18 @@ export class UserController {
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.
    * @param {Function} next - Express next middleware.
+   * @returns {Function} error.
    */
   logout (req, res, next) {
     try {
+      // if user tries to log out, but is not logged in to begin with
+      if (!req.session.username) {
+        const error = new Error('Not found. User must be logged in')
+        error.status = 404
+        error.message = 'Page not found.'
+        return next(error)
+      }
+      // if user tires to log out, when logged in.
       delete req.session.username
       if (!req.session.username) {
         // informs that user is not logged in
