@@ -97,7 +97,8 @@ export class HomeController {
       const viewData = {
         id: snippet._id,
         description: snippet.description,
-        title: snippet.title
+        title: snippet.title,
+        author: snippet.author
       }
       res.render('snippets/edit', { viewData })
     } catch (error) {
@@ -146,7 +147,8 @@ export class HomeController {
       const viewData = {
         id: snippet._id,
         description: snippet.description,
-        done: snippet.done
+        done: snippet.done,
+        author: snippet.author
       }
       res.render('snippets/remove', { viewData })
     } catch (error) {

@@ -1,4 +1,3 @@
-import { User } from '../models/user.js'
 import { Snippets } from '../models/snippets.js'
 
 /**
@@ -6,7 +5,7 @@ import { Snippets } from '../models/snippets.js'
  */
 export class AuthController {
 /**
- * Authorize: give certain access to user.
+ * Authorize: give certain access to user. Cheks i user is logged in.
  *
  * @param {object} req - Express request object.
  * @param {object} res - Express response object.
@@ -16,10 +15,15 @@ export class AuthController {
   async authorize (req, res, next) {
     try {
       if (!req.session.authenticated) {
-        console.log('user must be logged in')
-        const error = new Error('Not found. User must be logged in')
+        res.redirect('..')
+        req.session.flash = { type: 'danger', text: ' user must be logged in to edit/delete' }
+        console.log('step 1: user must be logged in')
+        throw new Error('User must be logged in')
+        /* const error = new Error('Not found. User must be logged in')
         error.status = 404
-        error.message = 'Page not found.'
+        error.message = 'Page not found.' */
+      } else {
+        console.log('step 1: user is logged in')
       }
       next()
     } catch (error) {
@@ -43,10 +47,10 @@ export class AuthController {
       snippet = snippet.author
       if (req.session.authenticated && req.session.username === snippet) {
         console.log(req.session.username, snippet)
-        console.log('user can edit/delete')
+        console.log('step 2: user can edit/delete')
       } else {
         console.log(req.session.username, snippet)
-        console.log('user cannot edit/delete')
+        console.log('step 2: user cannot edit/delete. User is not the creater of the snippet')
         const error = new Error('Not found')
         error.status = 404
         return next(error)

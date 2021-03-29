@@ -23,7 +23,7 @@ export const SnippetsSchema = new mongoose.Schema({
   },
   author: {
     type: String,
-    required: true
+    required: false
   }
 }, {
   timestamps: true
