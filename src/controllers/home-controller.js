@@ -116,17 +116,19 @@ export class HomeController {
    */
   async update (req, res) {
     try {
-      const result = await Snippets.updateOne({ _id: req.body.id }, {
+      const result = await Snippets.updateOne({ _id: req.params.id }, {
         description: req.body.description,
-        done: req.body.done === 'on'
+        title: req.body.title
+        // done: req.body.done === 'on'
       })
 
       if (result.nModified === 1) {
         req.session.flash = { type: 'success', text: 'The snippet was updated successfully.' }
         console.log('The snippet was updated successfully')
-      } /* else {
+      } else {
         req.session.flash = { type: 'danger', text: 'Failed to update snippet' }
-      } */
+        console.log(result)
+      }
       res.redirect('..')
     } catch (error) {
       console.log('there was an error')
