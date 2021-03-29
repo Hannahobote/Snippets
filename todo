@@ -9,6 +9,7 @@
   2. button to create account 
   3. only show this view if the person is not logged in. 
   4. view created snippets from other users
+  5. do not show button tpo update or delete.
 
 ### login  
   [x] a. prevent submit

@@ -30,6 +30,7 @@ export class UserController {
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.
    * @param {Function} next - Express next middleware.
+   * @returns {Function} error.
    */
   async login (req, res, next) {
     try {
@@ -49,7 +50,11 @@ export class UserController {
             res.redirect('.')
           })
         } else {
-          throw new Error('Error 403 Wrong username or password')
+          // throw new Error('Error 403 Wrong username or password')
+          const error = new Error('Not found. User must be logged in')
+          error.status = 401
+          error.message = 'Page not found.'
+          return next(error)
         }
       } else {
         throw new Error('Error 403 User does not exist')
@@ -97,14 +102,14 @@ export class UserController {
    * @param {Function} next - Express next middleware.
    */
   async preLogout (req, res, next) {
-    const viewData = {
+    /* const viewData = {
       users: (await User.find({}))
         .map(user => ({
           id: user._id,
           username: user.username,
           password: user.password
         }))
-    }
+    } */
     // console.log(viewData) // se whats in the database
     res.render('snippets/pre-logout')
   }

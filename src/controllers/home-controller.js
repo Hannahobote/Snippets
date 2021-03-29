@@ -20,11 +20,13 @@ export class HomeController {
             id: snippet._id,
             title: snippet.title,
             description: snippet.description,
-            author: snippet.author
+            author: snippet.author,
+            auth: req.session.authenticated
           }))
       }
+      const isLoggedin = { auth: req.session.authenticated }
       // console.log(viewData) // se whats in the database
-      res.render('snippets/index', { viewData })
+      res.render('snippets/index', { viewData, isLoggedin })
     } catch (error) {
       next(error)
     }
@@ -41,8 +43,8 @@ export class HomeController {
       description: '',
       done: false
     }
-
-    res.render('snippets/new', { viewData })
+    const isLoggedin = { auth: req.session.authenticated }
+    res.render('snippets/new', { viewData, isLoggedin })
   }
 
   /**
@@ -82,7 +84,8 @@ export class HomeController {
       dayName: moment().format('dddd')
     }
     console.log(viewData)
-    res.render('snippets/index', { viewData })
+    const isLoggedin = { auth: req.session.authenticated }
+    res.render('snippets/index', { viewData, isLoggedin })
   }
 
   /**
@@ -100,7 +103,8 @@ export class HomeController {
         title: snippet.title,
         author: snippet.author
       }
-      res.render('snippets/edit', { viewData })
+      const isLoggedin = { auth: req.session.authenticated }
+      res.render('snippets/edit', { viewData, isLoggedin })
     } catch (error) {
       console.log(error)
       req.session.flash = { type: 'danger', text: error.message }
@@ -152,7 +156,8 @@ export class HomeController {
         done: snippet.done,
         author: snippet.author
       }
-      res.render('snippets/remove', { viewData })
+      const isLoggedin = { auth: req.session.authenticated }
+      res.render('snippets/remove', { viewData, isLoggedin })
     } catch (error) {
       console.log('something went wrong')
       console.log(error)

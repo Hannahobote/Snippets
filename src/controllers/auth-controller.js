@@ -15,13 +15,11 @@ export class AuthController {
   async authorize (req, res, next) {
     try {
       if (!req.session.authenticated) {
-        res.redirect('..')
-        req.session.flash = { type: 'danger', text: ' user must be logged in to edit/delete' }
-        console.log('step 1: user must be logged in')
-        throw new Error('User must be logged in')
-        /* const error = new Error('Not found. User must be logged in')
+        const error = new Error('Not found. User must be logged in')
         error.status = 404
-        error.message = 'Page not found.' */
+        error.message = 'Page not found.'
+        console.log('step 1: user must be logged in')
+        return next(error)
       } else {
         console.log('step 1: user is logged in')
       }
@@ -52,7 +50,7 @@ export class AuthController {
         console.log(req.session.username, snippet)
         console.log('step 2: user cannot edit/delete. User is not the creater of the snippet')
         const error = new Error('Not found')
-        error.status = 404
+        error.status = 403
         return next(error)
       }
       next()
