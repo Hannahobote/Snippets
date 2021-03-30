@@ -71,24 +71,6 @@ export class HomeController {
   }
 
   /**
-   * Renders a view, based on posted data, and send the rendered HTML as sting as an http response.
-   *
-   * @param {object} req - Express request obj.
-   * @param {object} res - Express response obj.
-   */
-  /* async indexPost (req, res) {
-    const viewData = {
-      name: req.body.name,
-      title: req.body.title,
-      description: req.body.description,
-      dayName: moment().format('dddd')
-    }
-    console.log(viewData)
-    const isLoggedin = { auth: req.session.authenticated }
-    res.render('snippets/index', { viewData, isLoggedin })
-  } */
-
-  /**
    * Returns a HTML form for editing a snippet.
    *
    * @param {object} req - Express request obj.

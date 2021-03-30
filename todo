@@ -20,9 +20,9 @@
 ### create account
   [X] 1. user should be able to create account
   [X] 2. hash password!
-  [] 3. add flash message when account is created !!!
+  [x] 3. add flash message when account is created !!!
   [] 4. inform user if password is to short 
-  [] 5. send message is username is already taken
+  [x] 5. send message is username is already taken
   
 ### logout
   [x] 1. User should be able to logout!
@@ -84,4 +84,23 @@ för att se vad som finns i databasen --->
       })
       console.log(error)
     }
+  } */
+
+
+  /**
+   * Renders a view, based on posted data, and send the rendered HTML as sting as an http response.
+   *
+   * @param {object} req - Express request obj.
+   * @param {object} res - Express response obj.
+   */
+  /* async indexPost (req, res) {
+    const viewData = {
+      name: req.body.name,
+      title: req.body.title,
+      description: req.body.description,
+      dayName: moment().format('dddd')
+    }
+    console.log(viewData)
+    const isLoggedin = { auth: req.session.authenticated }
+    res.render('snippets/index', { viewData, isLoggedin })
   } */
