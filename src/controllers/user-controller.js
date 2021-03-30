@@ -15,23 +15,20 @@ export class UserController {
    */
   async createAccount (req, res, next) {
     try {
-      const userDuplicate = await User.findOne({ username: req.body.username }) === undefined ? 'unique' : req.body.username
-      console.log(req.body.username, userDuplicate)
+      const userDuplicate = await User.findOne({ username: req.body.username })
+      console.log(req.body.username, userDuplicate.username)
       if (req.body.username === userDuplicate.username) {
         console.log('cannot use the same email twice')
-        const error = new Error()
-        error.status = 404
-        return next(error)
+        req.session.flash = { type: 'danger', text: 'Cannot use the same email twice' }
+        res.redirect('./create-account')
       } else {
         const user = new User(req.body)
         console.log(user, userDuplicate)
         user.save()
-        req.session.flash = { type: 'success', text: 'Account has been created' }
+        req.session.flash = { type: 'success', text: 'Account has been created. Log in to use account' }
+        res.redirect('..')
       }
-      res.render('snippets/login')
     } catch (error) {
-      res.render('snippets/login')
-      req.session.flash = { type: 'danger', text: error.message }
       console.log(error)
     }
   }

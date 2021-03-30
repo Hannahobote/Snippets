@@ -16,17 +16,16 @@
   [x] 1. view for login 
   [x] 2. in header make button to log out 
   [X]  3. add flash messaqge when user is logged in
-  [] 4. user can edit the snipptes they made themselves.!!!
-
 
 ### create account
   [X] 1. user should be able to create account
   [X] 2. hash password!
   [] 3. add flash message when account is created !!!
   [] 4. inform user if password is to short 
+  [] 5. send message is username is already taken
   
 ### logout
-  [] 1. User should be able to logout!
+  [x] 1. User should be able to logout!
 
 ### Auth
   [x] 0. if user is auth + user id is the same as created user id, then let them edit and delete
