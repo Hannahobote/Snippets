@@ -44,3 +44,44 @@
 
 ### .env
   [x] 1. change to port to env string 
+
+
+för att se vad som finns i databasen --->
+    const viewData = {
+    users: (await User.find({}))
+      .map(user => ({
+        id: user._id,
+        username: user.username,
+        password: user.password
+      }))
+  } 
+
+
+  
+  /**
+   * Authenticate user: check if email and passowrd is correct.
+   *
+   * @param {*} req req.
+   * @param {*} res res.
+   * @param {*} next func.
+   */
+  /* async login2 (req, res, next) {
+    const { username, password } = req.body
+    try {
+      const user = User.authenticate(username, password)
+      req.session.regenerate(() => {
+        req.session.authenticated = true
+        req.session.username = user.username
+        req.session.userId = user._id
+        req.session.flash = { type: 'success', text: 'Login successful.' }
+        res.redirect('./login-form')
+      })
+    } catch (error) {
+      const validationErrors = ['Invalid username/password.']
+      res.render('./', {
+        validationErrors,
+        data: { username: username }
+      })
+      console.log(error)
+    }
+  } */

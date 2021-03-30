@@ -16,7 +16,7 @@ export class UserController {
   async createAccount (req, res, next) {
     try {
       const userDuplicate = await User.findOne({ username: req.body.username })
-      console.log(req.body.username, userDuplicate.username)
+      //  console.log(req.body.username, userDuplicate.username)
       if (req.body.username === userDuplicate.username) {
         console.log('cannot use the same email twice')
         req.session.flash = { type: 'danger', text: 'Cannot use the same email twice' }
@@ -63,14 +63,15 @@ export class UserController {
           console.log('wrong username/pasword')
           const error = new Error()
           error.status = 401
-          // error.message = 'Page not found.'
           return next(error)
         }
       } else {
-        console.log('User does not exist')
-        const error = new Error()
-        error.status = 404
-        return next(error)
+        // console.log('User does not exist')
+        // const error = new Error()
+        // error.status = 404
+        req.session.flash = { type: 'danger', text: 'User does not exist' }
+        res.redirect('.')
+        // return next(error)
       }
     } catch (error) {
       error.status = 403
@@ -80,51 +81,14 @@ export class UserController {
   }
 
   /**
-   * Authenticate user: check if email and passowrd is correct.
-   *
-   * @param {*} req req.
-   * @param {*} res res.
-   * @param {*} next func.
-   */
-  /* async login2 (req, res, next) {
-    const { username, password } = req.body
-    try {
-      const user = User.authenticate(username, password)
-      req.session.regenerate(() => {
-        req.session.authenticated = true
-        req.session.username = user.username
-        req.session.userId = user._id
-        req.session.flash = { type: 'success', text: 'Login successful.' }
-        res.redirect('./login-form')
-      })
-    } catch (error) {
-      const validationErrors = ['Invalid username/password.']
-      res.render('./', {
-        validationErrors,
-        data: { username: username }
-      })
-      console.log(error)
-    }
-  } */
-
-  /**
-   *Pre logout.
+   *Pre logout: pressents a button to log out.
    *
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.
    * @param {Function} next - Express next middleware.
    */
   async preLogout (req, res, next) {
-    /* const viewData = {
-      users: (await User.find({}))
-        .map(user => ({
-          id: user._id,
-          username: user.username,
-          password: user.password
-        }))
-    } */
     const isLoggedin = { auth: req.session.authenticated }
-    // console.log(viewData) // se whats in the database
     res.render('snippets/pre-logout', { isLoggedin })
   }
 
