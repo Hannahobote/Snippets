@@ -22,25 +22,25 @@
 ### create account
   [X] 1. user should be able to create account
   [X] 2. hash password!
-  [] 3. add flash message when account is created 
+  [] 3. add flash message when account is created !!!
   [] 4. inform user if password is to short 
   
 ### logout
   [] 1. User should be able to logout!
 
 ### Auth
-  [] 0. if user is auth + user id is the same as created user id, then let them edit and delete
-  [] 1. allow user to create snippet and see other snippets.
-  [] 2. allow user to edit own snippet
-  [] 2. allow user to delete own snippet
+  [x] 0. if user is auth + user id is the same as created user id, then let them edit and delete
+  [x] 1. allow user to create snippet and see other snippets.
+  [x] 2. allow user to edit own snippet
+  [x] 2. allow user to delete own snippet
 
 ### nav bar
-  1. if logged in, show navbar 
+  [x] 1. if logged in, show navbar 
 
 ### error 
-  1. 404.html
-  2. 500.hbs - för att skcika data
-  3. RENDER ERROR PAGE WHEN ERROR OCCUSRS!
+  [x] 1. 404.html
+  [x] 2. 500.hbs - för att skcika data
+  [] 3. RENDER ERROR PAGE WHEN ERROR OCCUSRS!
 
 
 ### .env

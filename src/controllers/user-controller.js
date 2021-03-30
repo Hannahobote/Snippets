@@ -15,21 +15,23 @@ export class UserController {
    */
   async createAccount (req, res, next) {
     try {
-      const userDuplicate = await User.findOne({ username: req.body.username })
+      const userDuplicate = await User.findOne({ username: req.body.username }) === undefined ? 'unique' : req.body.username
+      console.log(req.body.username, userDuplicate)
       if (req.body.username === userDuplicate.username) {
         console.log('cannot use the same email twice')
-        console.log(req.body.username, userDuplicate)
-        const error = new Error('cannot use the same email twice')
+        const error = new Error()
         error.status = 404
         return next(error)
       } else {
         const user = new User(req.body)
         console.log(user, userDuplicate)
         user.save()
-        res.render('snippets/index')
         req.session.flash = { type: 'success', text: 'Account has been created' }
       }
+      res.render('snippets/login')
     } catch (error) {
+      res.render('snippets/login')
+      req.session.flash = { type: 'danger', text: error.message }
       console.log(error)
     }
   }
@@ -52,6 +54,7 @@ export class UserController {
         const validPassword = await bcrypt.compare(req.body.password, user.password)
         // if the password is valid
         if (validPassword) {
+          console.log(user)
           req.session.regenerate(() => {
             req.session.authenticated = true
             req.session.username = user.username
@@ -60,17 +63,17 @@ export class UserController {
             res.redirect('.')
           })
         } else {
-          // throw new Error('Error 403 Wrong username or password')
-          const error = new Error('Not found. User must be logged in')
+          console.log('wrong username/pasword')
+          const error = new Error()
           error.status = 401
-          error.message = 'Page not found.'
+          // error.message = 'Page not found.'
           return next(error)
         }
       } else {
-        const error = new Error('User does not exist')
+        console.log('User does not exist')
+        const error = new Error()
         error.status = 404
         return next(error)
-        // throw new Error('Error 404 User does not exist')
       }
     } catch (error) {
       error.status = 403

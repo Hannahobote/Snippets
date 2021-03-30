@@ -21,7 +21,7 @@ export class HomeController {
             title: snippet.title,
             description: snippet.description,
             author: snippet.author,
-            auth: req.session.authenticated
+            auth: req.session.authenticated === undefined ? 'not logged in' : true
           }))
       }
       const isLoggedin = { auth: req.session.authenticated }
@@ -54,7 +54,7 @@ export class HomeController {
    * @param {object} res - Express response obj.
    */
   async create (req, res) {
-    console.log('from create function', req.session.username)
+    console.log('snippet created by', req.session.username)
     try {
       const snippet = new Snippets({
         description: req.body.description,
@@ -76,7 +76,7 @@ export class HomeController {
    * @param {object} req - Express request obj.
    * @param {object} res - Express response obj.
    */
-  async indexPost (req, res) {
+  /* async indexPost (req, res) {
     const viewData = {
       name: req.body.name,
       title: req.body.title,
@@ -86,7 +86,7 @@ export class HomeController {
     console.log(viewData)
     const isLoggedin = { auth: req.session.authenticated }
     res.render('snippets/index', { viewData, isLoggedin })
-  }
+  } */
 
   /**
    * Returns a HTML form for editing a snippet.

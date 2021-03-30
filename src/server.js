@@ -96,6 +96,17 @@ const main = async () => {
         .sendFile(join(directoryFullName, 'views', 'errors', '404.html'))
     }
 
+    if (err.status === 401) {
+      return res
+        .status(401)
+        .sendFile(join(directoryFullName, 'views', 'errors', '401.html'))
+    }
+    if (err.status === 403) {
+      return res
+        .status(403)
+        .sendFile(join(directoryFullName, 'views', 'errors', '403.html'))
+    }
+
     // 500 Internal Server Error (in production, all other errors send this response).
     if (req.app.get('env') !== 'development') {
       return res
