@@ -39,7 +39,7 @@
 ### error 
   [x] 1. 404.html
   [x] 2. 500.hbs - för att skcika data
-  [] 3. RENDER ERROR PAGE WHEN ERROR OCCUSRS!
+  [] 3. RENDER ERROR PAGE WHEN ERROR OCCUSRS! ( for 500 status code)
 
 
 ### .env
