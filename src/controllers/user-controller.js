@@ -18,14 +18,12 @@ export class UserController {
       const userDuplicate = await User.findOne({ username: req.body.username })
       const checkUser = userDuplicate === null ? false : userDuplicate
       // if user cant be found in db, then user is trying yto create a new account.
-     
-        if (req.body.password < 10) {
-          // In that case, check is pswrd is less than 10 characters
-          console.log('password is too short')
-          req.session.flash = { type: 'danger', text: 'Password must be atleast 10 characters' }
-          res.redirect('./create-account')
-        }
-   
+      if (req.body.password < 10) {
+        // In that case, check is pswrd is less than 10 characters
+        console.log('password is too short')
+        req.session.flash = { type: 'danger', text: 'Password must be atleast 10 characters' }
+        res.redirect('./create-account')
+      }
 
       if (req.body.username === checkUser.username) {
         //  console.log(req.body.username, userDuplicate.username)
@@ -52,7 +50,7 @@ export class UserController {
    * @param {Function} next - Express next middleware.
    * @returns {Function} error.
    */
-  async login(req, res, next) {
+  async login (req, res, next) {
     try {
       // find user in database
       const user = await User.findOne({ username: req.body.username })
@@ -98,7 +96,7 @@ export class UserController {
    * @param {object} res - Express response object.
    * @param {Function} next - Express next middleware.
    */
-  async preLogout(req, res, next) {
+  async preLogout (req, res, next) {
     const isLoggedin = { auth: req.session.authenticated }
     res.render('snippets/pre-logout', { isLoggedin })
   }
@@ -111,7 +109,7 @@ export class UserController {
    * @param {Function} next - Express next middleware.
    * @returns {Function} error.
    */
-  logout(req, res, next) {
+  logout (req, res, next) {
     try {
       // if user tries to log out, but is not logged in to begin with
       if (!req.session.username) {
@@ -142,7 +140,7 @@ export class UserController {
    * @param {object} res - Express response object.
    * @param {Function} next - Express next middleware function.
    */
-  async test(req, res, next) {
+  async test (req, res, next) {
     const user = { user: req.body.username, password: req.body.password }
     console.log(user, req.body)
     res.render('snippets/test')
