@@ -17,26 +17,23 @@ export class UserController {
     try {
       const userDuplicate = await User.findOne({ username: req.body.username })
       const checkUser = userDuplicate === null ? false : userDuplicate
-      // if user cant be found in db, then user is trying yto create a new account.
-      if (req.body.password < 10) {
-        // In that case, check is pswrd is less than 10 characters
-        console.log('password is too short')
-        req.session.flash = { type: 'danger', text: 'Password must be atleast 10 characters' }
-        res.redirect('./create-account')
-      }
-
       if (req.body.username === checkUser.username) {
         //  console.log(req.body.username, userDuplicate.username)
         console.log('cannot use the same email twice')
         req.session.flash = { type: 'danger', text: 'Cannot use the same email twice' }
         res.redirect('./create-account')
-      } else {
-        const user = new User(req.body)
-        console.log(user, checkUser)
-        user.save()
-        req.session.flash = { type: 'success', text: 'Account has been created. Log in to use account' }
-        res.redirect('..')
       }
+      if (req.body.password > 10) {
+        console.log('password is too short')
+        req.session.flash = { type: 'danger', text: 'Password must be atleast 10 characters' }
+        res.redirect('./create-account')
+      }
+
+      const user = new User(req.body)
+      // console.log(user)
+      user.save()
+      req.session.flash = { type: 'success', text: 'Account has been created. Log in to use account' }
+      res.redirect('..')
     } catch (error) {
       console.log(error)
     }
